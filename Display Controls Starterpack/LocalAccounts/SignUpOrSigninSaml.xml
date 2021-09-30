@@ -6,14 +6,12 @@
   PolicySchemaVersion="0.3.0.0"
   TenantId="playpowerb2ctest.onmicrosoft.com"
   PolicyId="B2C_1A_signup_signin_saml"
-  PublicPolicyUri="http://playpowerb2ctest.onmicrosoft.com/B2C_1A_signup_signin"
-  DeploymentMode="Development"
+  PublicPolicyUri="http://playpowerb2ctest.onmicrosoft.com/B2C_1A_signup_signin_saml"
+   DeploymentMode="Development"
   UserJourneyRecorderEndpoint="urn:journeyrecorder:applicationinsights"
-
-  
   >
 
- <!-- <BasePolicy>
+  <BasePolicy>
     <TenantId>playpowerb2ctest.onmicrosoft.com</TenantId>
     <PolicyId>B2C_1A_TrustFrameworkExtensions</PolicyId>
   </BasePolicy>
@@ -21,48 +19,50 @@
 <UserJourneys>
   <UserJourney Id="SignUpOrSignIn">
     <OrchestrationSteps>
-      <OrchestrationStep Order="7" Type="SendClaims" CpimIssuerTechnicalProfileReferenceId="Saml2AssertionIssuer"/>
-    </OrchestrationSteps>
-  </UserJourney>
-</UserJourneys> -->
-
-
-  <BasePolicy>
-    <TenantId>playpowerb2ctest.onmicrosoft.com</TenantId>
-    <PolicyId>B2C_1A_TrustFrameworkExtensions_custom_SelfServicePasswordReset</PolicyId>
-  </BasePolicy>
-
-<UserJourneys>
-  <UserJourney Id="SignUpOrSignIn-Custom">
-    <OrchestrationSteps>
-      <OrchestrationStep Order="8" Type="SendClaims" CpimIssuerTechnicalProfileReferenceId="Saml2AssertionIssuer"/>
+      <OrchestrationStep Order="4" Type="SendClaims" CpimIssuerTechnicalProfileReferenceId="Saml2AssertionIssuer"/>
     </OrchestrationSteps>
   </UserJourney>
 </UserJourneys>
 
-  <RelyingParty>
-    <DefaultUserJourney ReferenceId="SignUpOrSignIn-Custom" />
+    <RelyingParty>
 
+      <DefaultUserJourney ReferenceId="SignUpOrSignIn" />
+  
     <UserJourneyBehaviors>
     <JourneyInsights TelemetryEngine="ApplicationInsights" InstrumentationKey="23e79a46-0667-4427-9f05-de0d05dc9614" DeveloperMode="true" ClientEnabled="false" ServerEnabled="true" TelemetryVersion="1.0.0" />
   </UserJourneyBehaviors>
 
-        <TechnicalProfile Id="PolicyProfile">
+
+    <TechnicalProfile Id="PolicyProfile">
       <DisplayName>PolicyProfile</DisplayName>
       <Protocol Name="SAML2"/>
-      <OutputClaims>
-        <OutputClaim ClaimTypeReferenceId="issuerUserId" PartnerClaimType="assertionSubjectName" />
+      <!-- <OutputClaims>
+        <OutputClaim ClaimTypeReferenceId="email" PartnerClaimType="sub" />
         <OutputClaim ClaimTypeReferenceId="displayName" />
         <OutputClaim ClaimTypeReferenceId="givenName" />
         <OutputClaim ClaimTypeReferenceId="surname" />
-        <OutputClaim ClaimTypeReferenceId="email" DefaultValue="" />
+        <OutputClaim ClaimTypeReferenceId="email" DefaultValue=""  />
         <OutputClaim ClaimTypeReferenceId="identityProvider" DefaultValue="" />
         <OutputClaim ClaimTypeReferenceId="objectId" PartnerClaimType="objectId"/>
       </OutputClaims>
       <SubjectNamingInfo ClaimType="objectId" ExcludeAsClaim="true"/>
-    </TechnicalProfile>
+      <SubjectNamingInfo ClaimType="sub" Format="urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress" ExcludeAsClaim="true"/>
+
+    -->
 
 
+<OutputClaims>
+    <OutputClaim ClaimTypeReferenceId="signInNames.emailAddress" PartnerClaimType="sub" />
+    <OutputClaim ClaimTypeReferenceId="displayName" />
+    <OutputClaim ClaimTypeReferenceId="givenName" />
+    <OutputClaim ClaimTypeReferenceId="surname" />
+    <!-- <OutputClaim ClaimTypeReferenceId="email" DefaultValue=""/> -->
+    <OutputClaim ClaimTypeReferenceId="identityProvider" DefaultValue="" />
+    <OutputClaim ClaimTypeReferenceId="objectId" PartnerClaimType="objectId"/>
+  </OutputClaims>
+  <SubjectNamingInfo ClaimType="sub" Format="urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress" ExcludeAsClaim="true"/>
+
+ </TechnicalProfile>
 
   </RelyingParty>
 </TrustFrameworkPolicy>
